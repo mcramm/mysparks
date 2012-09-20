@@ -1,0 +1,47 @@
+body {
+  font-family: "Helvetica";
+}
+
+.wrapper {
+  width: 800px;
+  margin: 0px auto;
+}
+
+.header {
+  font-size: 18px;
+  font-weight: bold;
+  border-bottom: 5px solid black;
+  margin-bottom: 5px;
+}
+
+.controls {
+  margin-bottom: 5px;
+}
+
+.controls a{
+  margin-right: 5px;
+  color: #8597FF;
+}
+
+.controls a:visited {
+  color: #8597FF;
+}
+
+.spark {
+  border-bottom: 1px dotted grey;
+}
+
+.spark .num-additions {
+  background-color: green;
+  color: white;
+  border-radius: 10px;
+  display: inline-block;
+  width: 15px;
+  font-size: 10px;
+  text-align: center;
+}
+
+.spark .created {
+  color: #555;
+  font-size: 10px;
+}

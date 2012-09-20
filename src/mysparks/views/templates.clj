@@ -6,14 +6,15 @@
             (html5
               [:head
                [:title "My Sparks"]
-               (include-css "/css/reset.css")]
+               (include-css "/css/reset.css")
+               (include-css "/css/style.css")]
               [:body
                [:div.wrapper
                 content]]))
 
 (defpartial base [& content]
-            (layout [:div.header
-                     [:h1 "My Sparks"]] content))
+            (layout [:div.header [:h1 "My Sparks"]]
+                    content))
 
 (defpartial spark-common [spark]
             [:div.content (:content spark)]
@@ -36,7 +37,7 @@
 
 (defpartial root [sparks]
             (base [:div.controls
-                   [:a#add-spark "Add Spark"]
+                   [:a#add-spark {:href "#"} "Add Spark"]
                    [:a#read-sparks {:href "/read" :target "_blank"} "Read Sparks"]]
                   [:div.sparks
                    (map condensed-spark-block sparks)]))
