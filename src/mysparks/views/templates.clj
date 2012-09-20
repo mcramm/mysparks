@@ -15,11 +15,33 @@
             (layout [:div.header
                      [:h1 "My Sparks"]] content))
 
-(defpartial root []
+(defpartial spark-common [spark]
+            [:div.content (:content spark)]
+            [:div.created (:created spark)])
+
+(defpartial condensed-spark-block [spark]
+  [:div.spark
+   (spark-common spark)
+   [:div.num-additions (count (:additions spark))]])
+
+(defpartial addition-block [addition]
+            [:div.addition (spark-common addition)])
+
+(defpartial full-spark-block [spark]
+            [:div.spark
+             (spark-common spark)
+             [:div.num-additions (count (:additions spark))]
+             [:div.additions
+              (map addition-block (:additions spark))]])
+
+(defpartial root [sparks]
             (base [:div.controls
                    [:a#add-spark "Add Spark"]
-                   [:a#read-sparks {:href "/read" :target "_blank"} "Read Sparks"]]))
+                   [:a#read-sparks {:href "/read" :target "_blank"} "Read Sparks"]]
+                  [:div.sparks
+                   (map condensed-spark-block sparks)]))
 
-(defpartial read-sparks []
-            (base [:p "This is where you would read a spark"]))
+(defpartial read-sparks [sparks]
+            (base [:div.sparks
+                   (map full-spark-block sparks)]))
 
