@@ -19,17 +19,19 @@
   (let [additions (get-additions-for-spark (:id spark))]
     (assoc spark :additions additions)))
 
-(defn get-all [ord]
+(defn get-all []
   (let [results (sql/with-connection (System/getenv "DATABASE_URL")
                        (sql/with-query-results results
-                                               [(str "SELECT * FROM sparks WHERE parent_id IS NULL ORDER BY created " ord)] 
+                                               [(str "SELECT * FROM sparks WHERE parent_id IS NULL ORDER BY created")] 
                                                (into [] results)))]
     (map append-additions (set results))))
 
   
 (defn all []
-  (get-all "desc"))
+  ; This looks inverted, but it isn't oddness with clojure's sequences I
+  ; think...
+  (reverse (get-all)))
 
 (defn all-reverse []
-  (get-all "asc"))
+  (get-all))
 
