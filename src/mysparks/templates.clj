@@ -24,11 +24,12 @@
             (layout [:div.row [:div.header.span12 [:h1 "My Sparks"]]]
                     content))
 
-(defpartial spark-common [spark]
+(defpartial spark-common [spark & content]
             [:div.row
               [:div.content.span12 (:content spark)]]
             [:div.row
-             [:div.spark-foot.offset9.span3 
+             [:div.spark-foot.offset8.span4
+              [:span.controls content]
               [:span.created
                [:span.soft-label " Created:"]
                [:span.date (:created spark)]]
@@ -36,7 +37,18 @@
 
 (defpartial condensed-spark-block [spark]
   [:div.spark.span12
-   (spark-common spark)])
+   (spark-common spark
+                 [:a.add-addition {:href "#"
+                                   :onclick (str "showNewAddition(" (:id spark) ");")}
+                  "Add To Spark"])
+   [:div.new-addition.span12 {:id (str "new-addition-" (:id spark)) :style "display :none"}
+    (form-to [:post (str "/sparks/" (:id spark) "/additions")]
+             [:label "Description"]
+             [:textarea#content.span5 {:name "content"
+                                 :placeholder "What's the idea?"}]
+             [:div.control-group
+              [:button.btn {:type "submit"} "Submit"]])]
+   ])
 
 (defpartial addition-block [addition]
             [:div.addition.row
@@ -54,7 +66,7 @@
 (defpartial root [sparks]
             (base [:div.row [:div.controls.span12
                    [:a#add-spark {:href "#"
-                                  :onclick "showNew();"}
+                                  :onclick "showNewSpark();"}
                     "Add Spark"]
                    [:a#read-sparks {:href "/read" :target "_blank"}
                     "Read Sparks"]]]

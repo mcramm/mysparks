@@ -14,3 +14,8 @@
 (defpage [:post "/sparks"] {content :content}
          (spark/create content)
          (response/redirect "/"))
+
+(defpage [:post "/sparks/:spark-id/additions"] {content :content
+                                                spark-id :spark-id}
+         (spark/add-addition spark-id content)
+         (response/redirect "/"))
