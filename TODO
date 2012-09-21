@@ -1,0 +1,3 @@
+* Make migrations a single step - track migrations that have run
+* Refactor some of the code used to access the database
+* Refactor some of the view/templating logic
