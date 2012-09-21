@@ -9,7 +9,7 @@
          (templates/root (spark/all)))
 
 (defpage "/read" []
-         (templates/read-sparks (spark/all)))
+         (templates/read-sparks (spark/all-reverse)))
 
 (defpage [:post "/sparks"] {content :content}
          (spark/create content)
