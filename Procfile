@@ -1,1 +1,1 @@
-web: lein trampoline run -m mysparks.core
+web: lein trampoline run -m mysparks.server
