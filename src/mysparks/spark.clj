@@ -1,31 +1,32 @@
 (ns mysparks.spark
   (:require [clojure.java.jdbc :as sql]))
 
-(def example-sparks
-  [
-   {:content "This is the first spark I created. It is just a test."
-    :created "2012-09-11 11:05:32"
-    :additions [
-                {:content "This is an addition to the spark. Sparks only be added to."
-                 :created "2012-09-11 13:03:45"}
-                {:content "Yet another addition"
-                 :created "2012-09-11 14:17:62"}]}
-   {:content "This is the second spark I created. Yes, it is another test."
-    :created "2012-09-11 11:05:32"
-    :additions [
-                {:content "This spark only has one addition to it."
-                 :created "2012-09-11 14:17:62"}]}
-   ])
-
 (defn create [content]
   (sql/with-connection (System/getenv "DATABASE_URL")
                        (sql/insert-values :sparks [:content] [content])))
 
-(defn get-all [ord]
+(defn get-additions-for-spark [spark-id]
   (sql/with-connection (System/getenv "DATABASE_URL")
-                       (sql/with-query-results results 
-                                               [(str "select * from sparks order by id " ord)] 
+                       (sql/with-query-results results
+                                               [(str "SELECT * FROM sparks WHERE parent_id = " spark-id " ORDER BY created")]
                                                (into [] results))))
+
+(defn add-addition [spark-id content]
+  (sql/with-connection (System/getenv "DATABASE_URL")
+                       (sql/insert-values :sparks [:parent_id :content]
+                                                  [(Integer/parseInt spark-id) content])))
+(defn append-additions [spark]
+  (let [additions (get-additions-for-spark (:id spark))]
+    (assoc spark :additions additions)))
+
+(defn get-all [ord]
+  (let [results (sql/with-connection (System/getenv "DATABASE_URL")
+                       (sql/with-query-results results
+                                               [(str "SELECT * FROM sparks WHERE parent_id IS NULL ORDER BY created " ord)] 
+                                               (into [] results)))]
+    (map append-additions (set results))))
+
+  
 (defn all []
   (get-all "desc"))
 
