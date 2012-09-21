@@ -1,4 +1,4 @@
-(ns mysparks.views.welcome
+(ns mysparks.views.core
   (:require [mysparks.templates :as templates]
             [noir.response :as response]
             [mysparks.spark :as spark])
