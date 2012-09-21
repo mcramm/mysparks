@@ -21,8 +21,14 @@
   (sql/with-connection (System/getenv "DATABASE_URL")
                        (sql/insert-values :sparks [:content] [content])))
 
-(defn all []
+(defn get-all [ord]
   (sql/with-connection (System/getenv "DATABASE_URL")
                        (sql/with-query-results results 
-                                               ["select * from sparks order by id desc"] 
+                                               [(str "select * from sparks order by id " ord)] 
                                                (into [] results))))
+(defn all []
+  (get-all "desc"))
+
+(defn all-reverse []
+  (get-all "asc"))
+
