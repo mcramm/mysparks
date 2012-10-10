@@ -1,17 +1,34 @@
 # mysparks
 
-A website written in noir. 
+A web app for tracking ideas. Written in noir.
 
 ## Usage
 
+You'll need a postgresql server running and export the following
+variable:
+
+
 ```bash
-lein deps
-lein run
+export DATABASE_URL=postgresql://localhost/mysparks
 ```
 
-## License
+You'll also need a database/user.
 
-Copyright (C) 2011 FIXME
+Then get any dependencies (You will need [Leiningen](https://github.com/technomancy/leiningen)):
 
-Distributed under the Eclipse Public License, the same as Clojure.
+```bash
+lein deps
+```
 
+Then run the migrations (currently a two step process):
+
+```bash
+lein run -m mysparks.migrations.create-sparks
+lein run -m mysparks.migrations.add-parent-id-to-sparks
+```
+
+Now you should be ready to go!
+
+```bash
+lein run
+```
